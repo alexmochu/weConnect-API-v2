@@ -1,5 +1,12 @@
 # api/__init__.py
 
+# local imports
+from api.views import app
+
+def create_app():
+    """Initialize the app"""
+    return app
+"""
 # third-party imports
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -23,4 +30,4 @@ def create_app(config_name):
         response = jsonify({"message": "Welcome to weConnect_V2"})
         return response
 
-    return app
+    return app """
