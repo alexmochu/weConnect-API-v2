@@ -11,7 +11,7 @@ The API has been built with:
 # UI templates and API Documentation
 - To preview the UI, proceed to https://alexmochu.github.io .
 - The <a href="https://github.com/alexmochu/alexmochu.github.io">UI Templates</a> have been hosted on Github Pages
-- Access the API documentation at "#"
+- Access the API documentation at "https://weconnectv2.docs.apiary.io"
 
 # Features
 1.  Users can be able to register and create an account
@@ -39,6 +39,8 @@ The API has been built with:
 |-------------- |------- |---------------
 | /api/v2/auth/register | POST | User Registration
 | /api/v2/auth/login    | POST | User Login
+| /api/v2/auth/reset-password    | PUT | User can be able to reset password
+| /api/v2/auth/logout    | POST | Logs out User
 
 
 
