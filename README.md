@@ -39,8 +39,12 @@ The API has been built with:
 |-------------- |------- |---------------
 | /api/v2/auth/register | POST | User Registration
 | /api/v2/auth/login    | POST | User Login
-| /api/v2/auth/reset-password    | PUT | User can be able to reset password
-| /api/v2/auth/logout    | POST | Logs out User
+| /api/v1/category    | POST | Create a business category
+| /api/v1/category    | GET | Retrieve all created categories
+| /api/v1/category/<category_name>    | PUT | Updates a business category
+| /api/v1/category/<category_name>    | DELETE | Deletes a business category
+| #/api/v2/auth/reset-password    | PUT | User can be able to reset password
+| #/api/v2/auth/logout    | POST | Logs out User
 
 
 
