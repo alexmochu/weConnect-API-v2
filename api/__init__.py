@@ -28,4 +28,10 @@ def create_app(config_name):
 
     from api import models
 
+    from .auth import auth as auth_blueprint
+    app.register_blueprint(auth_blueprint)
+
+    from .home import home as home_blueprint
+    app.register_blueprint(home_blueprint)
+
     return app
