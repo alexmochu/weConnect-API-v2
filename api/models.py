@@ -1,6 +1,6 @@
 # api/models.py
 
-from api.views import db
+from api import db
 
 class User(db.Model):
     """
