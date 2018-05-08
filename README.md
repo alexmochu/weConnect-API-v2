@@ -38,7 +38,7 @@ The API has been built with:
 | Resource URL | Methods | Description
 |-------------- |------- |---------------
 | /api/v2/auth/register | POST | User Registration
-| /api/v2/auth/login    | GET | User Login
+| /api/v2/auth/login    | POST | User Login
 | /api/v1/category    | POST | Create a business category
 | /api/v1/category    | GET | Retrieve all created categories
 | /api/v1/category/<category_name>    | PUT | Updates a business category
