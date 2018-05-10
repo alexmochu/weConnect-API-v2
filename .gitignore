@@ -3,3 +3,4 @@
 *.pyc
 instance/
 .vscode
+.coverage
