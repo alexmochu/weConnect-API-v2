@@ -34,4 +34,7 @@ def create_app(config_name):
     from .home import home as home_blueprint
     app.register_blueprint(home_blueprint)
 
+    from .categ import categ as categ_blueprint
+    app.register_blueprint(categ_blueprint)
+
     return app
