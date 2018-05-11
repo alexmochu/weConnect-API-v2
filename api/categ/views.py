@@ -1,9 +1,7 @@
 # api/categ/views.py
-import uuid
 import re
 
 from flask import jsonify, request, make_response
-from flask_login import current_user
 from functools import wraps
 
 # local imports
@@ -16,7 +14,7 @@ def validate_data(category_item):
     if not category_item['category'] or not category_item['description']:
         return "Category details cannot be empty!"
     elif len(category_item['category']) < 5 or not re.match("^[a-zA-Z0-9 _]*$", category_item['category']):
-        return "Category name cannot have special characters or numbers!"  
+        return "Category name cannot have special characters or numbers or less than 5 characters"  
     else:
         return category_item
 
