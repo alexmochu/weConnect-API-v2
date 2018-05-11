@@ -34,4 +34,28 @@ def create_app(config_name):
     from .home import home as home_blueprint
     app.register_blueprint(home_blueprint)
 
+    from .categ import categ as categ_blueprint
+    app.register_blueprint(categ_blueprint)
+
+    from .business import business as business_blueprint
+    app.register_blueprint(business_blueprint)
+
+    from .review import review as review_blueprint
+    app.register_blueprint(review_blueprint)
+
+    @app.errorhandler(403)
+    def forbidden(error):
+        response = {"message" : "You do not have sufficient permissions to access this route."}
+        return make_response(jsonify(response)), 403
+
+    @app.errorhandler(404)
+    def page_not_found(error):
+        response = {"message" : "The what you're looking for doesn't exist."}
+        return make_response(jsonify(response)), 404
+
+    @app.errorhandler(500)
+    def internal_server_error(error):
+        response = {"message" : "The server encountered an internal error. That's all we know."}
+        return make_response(jsonify(response)), 500
+
     return app

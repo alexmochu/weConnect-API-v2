@@ -3,3 +3,5 @@
 *.pyc
 instance/
 .vscode
+.coverage
+.env
