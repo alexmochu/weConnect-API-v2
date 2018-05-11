@@ -1,4 +1,6 @@
 # weConnect-API-v2
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d2bb80729b76446e85540300e4af348d)](https://www.codacy.com/app/alexmochu/weConnect-API-v2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=alexmochu/weConnect-API-v2&amp;utm_campaign=Badge_Grade)
 WeConnect provides a platform that brings businesses and individuals together. This platform creates awareness for businesses and gives the users the ability to write reviews about the businesses they have interacted with. 
 
 
@@ -41,10 +43,12 @@ The API has been built with:
 | /api/v2/auth/login    | POST | User Login
 | /api/v1/category    | POST | Create a business category
 | /api/v1/category    | GET | Retrieve all created categories
-| /api/v1/category/<category_name>    | PUT | Updates a business category
-| /api/v1/category/<category_name>    | DELETE | Deletes a business category
-| #/api/v2/auth/reset-password    | PUT | User can be able to reset password
-| #/api/v2/auth/logout    | POST | Logs out User
+| /api/v2/<category>/business   | POST | Create Business Item
+| /api/v2/business   | GET | Retrieve all created businesses
+| /api/v2/<business>/review   | GET | Create a review for a business item
+| /api/v2/review   | GET | Retrieve all created reviews
+  
+
 
 
 
