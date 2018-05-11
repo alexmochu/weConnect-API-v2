@@ -43,32 +43,38 @@ def signup():
 
     data = request.get_json()
 
-    hashed_password = generate_password_hash(data['password'], method='sha256')
-    new_user = User(username=data['username'], email=data['email'], password=hashed_password)
+    #hashed_password = generate_password_hash(data['password'], method='sha256')
+    new_user = User(username=data['username'], email=data['email'], password=data['password'])
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify({'message': 'Successfully created an account. Login to access account '})
+    return jsonify({'message': 'Successfully created an account. Login to access account'}), 201
 
 # login into a registered account
-@auth.route('/api/v2/auth/login')
+@auth.route('/api/v2/auth/login', methods=['POST'] )
 def login():
-    auth = request.authorization
+    """Handle POST request for this view. Url ---> /auth/login"""
+    try:
+        # Get the user object using their email (unique to every user)
+        req = request.get_json()
+        user = User.query.filter_by(username=req['username'], password=req['password']).first()
+        # Try to authenticate the found user using their password
+        if user:
+            # Generate the access token. This will be used as the authorization header
+            header_access_token = jwt.encode({'username': user.username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, current_app.config.get('SECRET_KEY'))
+            if header_access_token:
+                response = {
+                    'message': 'You logged in successfully.',
+                    'header_access_token': header_access_token.decode()
+                }
+                return make_response(jsonify(response)), 200
+        else:
+            # User does not exist. Therefore, we return an error message
+            response = {'message': 'Invalid username or password, Please try again'}
+            return make_response(jsonify(response)), 401
 
-    if not auth or not auth.username or not auth.password:
-        return make_response('Could not verify', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'})
-
-    user = User.query.filter_by(username=auth.username).first()
-
-    if not user:
-        return make_response('Could not verify', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'})
-
-    if check_password_hash(user.password, auth.password):
-        token = jwt.encode({'username': user.username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, current_app.config.get('SECRET_KEY'))
-
-        return jsonify({
-                        'message': 'You logged in successfully.',
-                        'token' : token.decode('UTF-8')
-                        })
-    
-    return make_response('Could not verify', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'})
+    except Exception as e:
+        # Create a response containing an string error message
+        response = {'message': str(e)}
+        # Return a server error using the HTTP Error Code 500 (Internal Server Error)
+        return make_response(jsonify(response)), 500
