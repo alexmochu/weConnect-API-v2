@@ -14,13 +14,14 @@ class User(db.Model):
     username = db.Column(db.String(60), index=True, unique=True)
     password = db.Column(db.String(80)) 
 
-    def __init__(self, username, email):
+    def __init__(self, username, email, password):
         """
         Initialization of user credentials
         """
 
         self.username = username
         self.email = email
+        self.password = password
 
 class Category(db.Model):
     """
