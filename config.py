@@ -1,4 +1,5 @@
 # config.py
+import os
 
 class Config(object):
     """
@@ -22,7 +23,15 @@ class ProductionConfig(Config):
 
     DEBUG = False
 
+class TestingConfig(Config):
+    """ Configurations for Testing, with a separate test database."""
+    TESTING = True
+    DEBUG = True
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
+
 app_config = {
     'development': DevelopmentConfig,
+    'testing': TestingConfig,
     'production': ProductionConfig
 }
