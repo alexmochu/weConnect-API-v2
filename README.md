@@ -41,12 +41,24 @@ The API has been built with:
 |-------------- |------- |---------------
 | /api/v2/auth/register | POST | User Registration
 | /api/v2/auth/login    | POST | User Login
-| /api/v1/category    | POST | Create a business category
-| /api/v1/category    | GET | Retrieve all created categories
-| /api/v2/<category>/business   | POST | Create Business Item
-| /api/v2/business   | GET | Retrieve all created businesses
-| /api/v2/<business>/review   | GET | Create a review for a business item
-| /api/v2/review   | GET | Retrieve all created reviews
+| /api/v2/auth/reset-password | POST | User can be able to reset password
+| /api/v2/auth/logout | POST | Logs out User
+| /api/v2/category | POST | Create a business category
+| /api/v2/category/all | GET | Retrieve all created categories
+| /api/v2/category/<category_id> | GET | Retrieve Category by ID
+| /api/v2/category/<category_id> | PUT | Updates a business category
+| /api/v2/category/<category_id> | DELETE | Deletes a business category
+| /api/v2/<category_id>/business | POST | Create a business with unique ID and business name
+| /api/v2/business/all | GET | Retrive all business created
+| /api/v2/business/<business_id> | PUT | Updates a business profile
+| /api/v2/business/<business_id> | GET | Retrive a business by ID
+| /api/v2/business/<business_id> | DELETE | Remove a business
+| /api/v2/business/<location_name> | GET | Retrieve businesses by Location
+| /api/v2/business/<category_id> | GET | Retrieve businesses by Category ID
+| /api/v2/business/<business_id>/reviews | POST | Add a review for a business
+| /api/v2/business/<business_id>/reviews | GET | Get all reviews for a business
+| /api/v2/reviews/all | GET | Get all reviews 
+
   
 
 
