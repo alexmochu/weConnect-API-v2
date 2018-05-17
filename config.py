@@ -28,7 +28,7 @@ class TestingConfig(Config):
     TESTING = True
     DEBUG = True
     SECRET_KEY = os.getenv('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/weConnect_test'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/weConnect_V2_db'
     #postgres:mypassword@
 
 app_config = {
