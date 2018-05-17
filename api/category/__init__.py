@@ -2,6 +2,6 @@
 
 from flask import Blueprint
 
-categ = Blueprint('categ', __name__)
+category = Blueprint('category', __name__)
 
 from . import views
