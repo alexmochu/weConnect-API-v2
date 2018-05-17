@@ -34,8 +34,8 @@ def create_app(config_name):
     from .home import home as home_blueprint
     app.register_blueprint(home_blueprint)
 
-    from .categ import categ as categ_blueprint
-    app.register_blueprint(categ_blueprint)
+    from .category import category as category_blueprint
+    app.register_blueprint(category_blueprint)
 
     from .business import business as business_blueprint
     app.register_blueprint(business_blueprint)
@@ -50,8 +50,13 @@ def create_app(config_name):
 
     @app.errorhandler(404)
     def page_not_found(error):
-        response = {"message" : "The what you're looking for doesn't exist."}
+        response = {"message" : "What you're looking for doesn't exist."}
         return make_response(jsonify(response)), 404
+
+    @app.errorhandler(405)
+    def page_not_found(error):
+        response = {"message" : "Request method is not allowed please recheck and try again"}
+        return make_response(jsonify(response)), 405
 
     @app.errorhandler(500)
     def internal_server_error(error):
