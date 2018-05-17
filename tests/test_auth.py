@@ -33,9 +33,9 @@ class AuthTestCase(unittest.TestCase):
 
         with self.app.app_context():
             # create all tables
+            db.create_all()
             db.session.close()
             db.drop_all()
-            db.create_all()
      def register_user(self, data):
         return self.client().post('api/v2/auth/register', data=json.dumps(data), content_type='application/json' )
 
