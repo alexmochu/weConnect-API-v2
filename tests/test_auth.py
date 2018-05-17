@@ -12,6 +12,7 @@ class AuthTestCase(unittest.TestCase):
      def setUp(self):
         """Set up test variables."""
         self.app = create_app(config_name="testing")
+        self.app.config.update(SQLALCHEMY_DATABASE_URI='postgresql://postgres:mypassword@localhost/weConnect_test')
         self.app_context = self.app.app_context()
         self.app_context.push()
         # initialize the test client
@@ -21,7 +22,8 @@ class AuthTestCase(unittest.TestCase):
         self.user_data = {
             'username':'bigdolf',
             'email': 'test@example.com',
-            'password': 'J@yd33n'
+            'password': 'J@yd33n',
+            'confirm_password': 'J@yd33n'
         }
         self.login_data = {
             'username': 'bigdolf',
