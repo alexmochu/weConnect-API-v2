@@ -44,16 +44,22 @@ The API has been built with:
 | /api/v2/auth/reset-password | POST | User can be able to reset password
 | /api/v2/auth/logout | POST | Logs out User
 | /api/v2/category | POST | Create a business category
-| /api/v2/category/all | GET | Retrieve all created categories
+| /api/v2/category/all| GET | Retrieve all created categories
+| /api/v2/category/all/page=<int:page>| GET | (Paginantion)Retrieve all created categories
+| /api/v2/category/all/page=<int:page>&limit=<int:limit>| GET | (Paginantion)Retrieve all created categories
 | /api/v2/category/<category_id> | PUT | Updates a business category
 | /api/v2/category/<category_id> | DELETE | Deletes a business category
 | /api/v2/<category_id>/business | POST | Create a business with unique ID and business name
 | /api/v2/business/all | GET | Retrive all business created
+| /api/v2/business/all/page=<int:page> | GET | (Paginantion)Retrive all business created
+| /api/v2/business/all/page=<int:page>&limit=<int:limit> | GET | (Paginantion)Retrive all business created
 | /api/v2/business/<business_id> | PUT | Updates a business profile
 | /api/v2/business/<business_id> | GET | Retrive a business by ID
 | /api/v2/business/<business_id> | DELETE | Remove a business
 | /api/v2/business/<business_id>/reviews | POST | Add a review for a business
 | /api/v2/reviews/all | GET | Get all reviews 
+| /api/v2/reviews/all/page=<int:page> | GET | (Paginantion)Get all reviews
+| /api/v2/reviews/all/page=<int:page>&limit=<int:limit> | GET | (Paginantion)Get all reviews
 
   
 
