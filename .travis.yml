@@ -9,6 +9,6 @@ before_script:
   #- psql -c "CREATE USER postgres WITH PASSWORD 'mypassword';" -U postgres
   #- psql -c "GRANT ALL PRIVILEGES ON DATABASE weConnect_test to postgres;" -U postgres
 
-script: nosetests --with-coverage --cover-package=tests/ && coverage report 
+script: nosetests --with-coverage --cover-package=api && coverage report 
 
 after_success: coveralls
