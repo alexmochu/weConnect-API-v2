@@ -14,7 +14,7 @@ class BusinessTestCase(unittest.TestCase):
     def setUp(self):
         """Define test variables and initialize app."""
         self.app = create_app(config_name="testing")
-        self.app.config.update(SQLALCHEMY_DATABASE_URI='postgresql://postgres:mypassword@localhost/weConnect_test')
+        self.app.config.update(SQLALCHEMY_DATABASE_URI='postgresql://localhost/weConnect_test')
         self.app_context = self.app.app_context()
         self.app_context.push()
         self.client = self.app.test_client
