@@ -13,7 +13,7 @@ class AuthTestCase(unittest.TestCase):
      def setUp(self):
         """Set up test variables."""
         self.app = create_app(config_name="testing")
-        self.app.config.update(SQLALCHEMY_DATABASE_URI='postgresql://localhost/weConnect_test')
+        self.app.config.update(SQLALCHEMY_DATABASE_URI='postgresql://postgres:mypassword@localhost/weConnect_test')
         self.app_context = self.app.app_context()
         self.app_context.push()
         # initialize the test client
@@ -33,8 +33,8 @@ class AuthTestCase(unittest.TestCase):
 
         with self.app.app_context():
             # create all tables
-            #db.session.close()
-            #db.drop_all()
+            db.session.close()
+            db.drop_all()
             db.create_all()
      def register_user(self, data):
         return self.client().post('api/v2/auth/register', data=json.dumps(data), content_type='application/json' )
