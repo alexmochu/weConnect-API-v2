@@ -13,7 +13,7 @@ class BusinessTestCase(unittest.TestCase):
     def setUp(self):
         """Define test variables and initialize app."""
         self.app = create_app(config_name="testing")
-        self.app.config.update(SQLALCHEMY_DATABASE_URI='postgresql://localhost/weConnect_test')
+        self.app.config.update(SQLALCHEMY_DATABASE_URI='postgresql://postgres:mypassword@localhost/weConnect_test')
         self.app_context = self.app.app_context()
         self.app_context.push()
         self.client = self.app.test_client
@@ -21,8 +21,7 @@ class BusinessTestCase(unittest.TestCase):
         self.user_data = {'username': "bigdolf", 'email': "big@dolf.com", 'password': "J@yd33n"}
         self.login_data = {'username': "bigdolf", 'password': "J@yd33n"}
         self.user_data2 = {'username': "smalldolf", 'email': "small@dolf.com",'password': "sTr0ng3st@dolf"}
-        self.login_data2 = {'username': "smalldolf", 'password': "sTr0ng3st@dolf"
-        }
+        self.login_data2 = {'username': "smalldolf", 'password': "sTr0ng3st@dolf"}
 
         # binds the app to the current context
         with self.app.app_context():
