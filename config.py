@@ -29,7 +29,8 @@ class TestingConfig(Config):
     DEBUG = True
     SECRET_KEY = os.getenv('SECRET_KEY') or 'gkldfgdflkgdflkgjdfjk'
     SQLALCHEMY_DATABASE_URI = os.getenv('TEST_DB_URL')
-    #postgres:mypassword@
+    PRESERVE_CONTEXT_ON_EXCEPTION = False
+
 
 app_config = {
     'development': DevelopmentConfig,
