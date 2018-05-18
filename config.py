@@ -31,7 +31,6 @@ class TestingConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.getenv('TEST_DB_URL')
     PRESERVE_CONTEXT_ON_EXCEPTION = False
 
-
 app_config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
