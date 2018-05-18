@@ -1,6 +1,9 @@
 # weConnect-API-v2
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d2bb80729b76446e85540300e4af348d)](https://www.codacy.com/app/alexmochu/weConnect-API-v2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=alexmochu/weConnect-API-v2&amp;utm_campaign=Badge_Grade)
+[![Maintainability](https://api.codeclimate.com/v1/badges/d5c2e3a5f81cba46d514/maintainability)](https://codeclimate.com/github/alexmochu/weConnect-API-v2/maintainability)
+[![Build Status](https://travis-ci.org/alexmochu/weConnect-API-v2.svg?branch=master)](https://travis-ci.org/alexmochu/weConnect-API-v2)
+[![Coverage Status](https://coveralls.io/repos/github/alexmochu/weConnect-API-v2/badge.svg?branch=master)](https://coveralls.io/github/alexmochu/weConnect-API-v2?branch=master)
 WeConnect provides a platform that brings businesses and individuals together. This platform creates awareness for businesses and gives the users the ability to write reviews about the businesses they have interacted with. 
 
 
