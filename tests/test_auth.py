@@ -36,6 +36,7 @@ class AuthTestCase(unittest.TestCase):
             db.session.close()
             db.drop_all()
             db.create_all()
+
      def register_user(self, data):
         return self.client().post('api/v2/auth/register', data=json.dumps(data), content_type='application/json' )
 
@@ -90,3 +91,13 @@ class AuthTestCase(unittest.TestCase):
         result = self.login_user(self.login_data)
         header_access_token = json.loads(result.data.decode())['header_access_token']
         return header_access_token
+
+     def tearDown(self):
+        """teardown all initialized variables."""
+        # drop all tables
+        db.session.remove()
+        db.drop_all()
+    
+
+if __name__ == "__main__":
+    unittest.main()
