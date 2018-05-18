@@ -5,6 +5,7 @@ from api import create_app, db
 class BasicsTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
+        self.app.config.update(SQLALCHEMY_DATABASE_URI='postgresql://postgres:mypassword@localhost/weConnect_test')
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
