@@ -78,6 +78,3 @@ class AuthTestCase(unittest.TestCase):
         result = self.login_user(self.login_data2)
         header_access_token = json.loads(result.data.decode())['header_access_token']
         return header_access_token
-
-if __name__ == "__main__":
-    unittest.main()
