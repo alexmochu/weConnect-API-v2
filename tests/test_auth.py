@@ -79,12 +79,5 @@ class AuthTestCase(unittest.TestCase):
         header_access_token = json.loads(result.data.decode())['header_access_token']
         return header_access_token
 
-     def tearDown(self):
-        """teardown all initialized variables."""
-        # drop all tables
-        db.session.remove()
-        db.drop_all()
-    
-
 if __name__ == "__main__":
     unittest.main()
