@@ -3,20 +3,22 @@
 import unittest
 import json
 
+"""
+Tests for authentication
+"""
+import json
 from flask_testing import TestCase
 from werkzeug.security import generate_password_hash, check_password_hash
-
 from api import create_app, db
 
-class AuthTestCase(unittest.TestCase):
-     """Test case for the auth blueprint."""
-     def setUp(self):
-        """Set up test variables."""
-        self.app = create_app(config_name="testing")
-        #self.app.config.update(SQLALCHEMY_DATABASE_URI='postgresql://postgres:mypassword@localhost/weConnect_test')
+class AuthTest(unittest.TestCase):
+
+    """Tests for the authentication blueprint."""
+    def setUp(self):
+        """setup test variables"""
+        self.app = create_app(config_name='testing')
         self.app_context = self.app.app_context()
         self.app_context.push()
-        # initialize the test client
         self.client = self.app.test_client
         # This is the user test json data with a predefined email and password
         hashed_password = generate_password_hash('J@yd33n', method='sha256')
@@ -30,7 +32,6 @@ class AuthTestCase(unittest.TestCase):
             'username': 'bigdolf',
             'password': 'J@yd33n'
         }
-
         self.user_data2 = {
             'username':'smalldolf',
             'email': 'test1@example.com',
@@ -42,20 +43,24 @@ class AuthTestCase(unittest.TestCase):
             'username': 'smalldolf',
             'password': 'J@yd33n'
         }
-
         with self.app.app_context():
-            # create all tables
             db.session.close()
             db.drop_all()
             db.create_all()
+            
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+        self.app_context.pop()
+        del self.client
 
-     def register_user(self, data):
+    def register_user(self, data):
         return self.client().post('api/v2/auth/register', data=json.dumps(data), content_type='application/json' )
 
-     def login_user(self, data):
+    def login_user(self, data):
         return self.client().post('/api/v2/auth/login', data=json.dumps(data), content_type='application/json' )
-
-     def test_registration(self):
+    
+    def test_registration(self):
         """Test user registration works correcty."""
         res = self.register_user(self.user_data)
         # get the results returned in json format
@@ -63,17 +68,3 @@ class AuthTestCase(unittest.TestCase):
         # assert that the request contains a success message and a 201 status code
         self.assertEqual(result['message'], "Successfully created an account. Login to access account")
         self.assertEqual(res.status_code, 201)
-
-     def get_token(self):
-        """register and login a user to get an access token"""
-        self.register_user(self.user_data)
-        result = self.login_user(self.login_data)
-        header_access_token = json.loads(result.data.decode())['header_access_token']
-        return header_access_token
-
-     def get_new_token(self):
-        """register and login a user to get an access token"""
-        self.register_user(self.user_data2)
-        result = self.login_user(self.login_data2)
-        header_access_token = json.loads(result.data.decode())['header_access_token']
-        return header_access_token
