@@ -15,15 +15,16 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
+    public_id = db.Column(db.String(50), unique=True)
     email = db.Column(db.String(60), index=True, unique=True)
     username = db.Column(db.String(60), index=True, unique=True)
     password = db.Column(db.String(80)) 
 
-    def __init__(self, username, email, password):
+    def __init__(self, username, email, password, public_id):
         """
         Initialization of user credentials
         """
-
+        self.public_id = public_id
         self.username = username
         self.email = email
         self.password = Bcrypt().generate_password_hash(password).decode()
@@ -73,7 +74,7 @@ class User(db.Model):
         try:
             # try to decode the token using our SECRET variable
             payload = jwt.decode(token, current_app.config.get('SECRET_KEY'))
-            return payload['username']
+            return payload['sub']
         except jwt.ExpiredSignatureError:
             # the token is expired, return an error string
             response = {"Expired token. Please login to get a new token"}

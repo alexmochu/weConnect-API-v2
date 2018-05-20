@@ -87,7 +87,7 @@ def signup():
 
     try:
         #hashed_password = generate_password_hash(data['password'], method='sha256')
-        new_user = User(username=data['username'], email=data['email'], password=data['password'])
+        new_user = User(public_id=str(uuid.uuid4()), username=data['username'], email=data['email'], password=data['password'])
         db.session.add(new_user)
         db.session.commit()
 
@@ -105,17 +105,21 @@ def login():
     """Handle POST request for this view. Url ---> /auth/login"""
     try:
         # Get the user object using their email (unique to every user)
-        req = request.get_json()
-        user = User.query.filter_by(username=req['username']).first()
+        req = request.authorization
+        user = User.query.filter_by(username=req.username).first()
         # Try to authenticate the found user using their password
-        if user and user.password_is_valid(req['password']):
+        
+        if user and user.password_is_valid(req.password):
+            
             # Generate the access token. This will be used as the authorization header
-            header_access_token = jwt.encode({'username': user.username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, current_app.config.get('SECRET_KEY'))
+            header_access_token = user.generate_token(user.public_id)
+            print(header_access_token)
             if header_access_token:
                 response = {
                     'message': 'You logged in successfully.',
                     'header_access_token': header_access_token.decode()
                 }
+                
                 return make_response(jsonify(response)), 200
         else:
             # User does not exist. Therefore, we return an error message
@@ -127,7 +131,7 @@ def login():
         response = {'message': str(e)}
         # Return a server error using the HTTP Error Code 500 (Internal Server Error)
         return make_response(jsonify(response)), 500
-
+       
 @auth.route('/api/v2/auth/reset-password', methods=['PUT'])
 @token_required
 def reset_password(current_user, data):
