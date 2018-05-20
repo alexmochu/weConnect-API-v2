@@ -71,7 +71,6 @@ class AuthTestCase(unittest.TestCase):
         header_access_token = json.loads(result.data.decode())['header_access_token']
         return header_access_token
 
-
      def get_new_token(self):
         """register and login a user to get an access token"""
         self.register_user(self.user_data2)
