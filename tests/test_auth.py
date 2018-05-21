@@ -12,7 +12,7 @@ class AuthTestCase(unittest.TestCase):
         self.app = create_app(config_name="testing")
         #self.app.config.update(SQLALCHEMY_DATABASE_URI='postgresql://postgres:mypassword@localhost/weConnect_test')
         self.app_context = self.app.app_context()
-        self.app_context.push()
+        #self.app_context.push()
         # initialize the test client
         self.client = self.app.test_client
         # This is the user test json data with a predefined email and password
@@ -43,12 +43,8 @@ class AuthTestCase(unittest.TestCase):
         with self.app.app_context():
             # create all tables
             # db.session.close()
-            # db.drop_all()
-            db.create_all()
-
-     def tearDown(self):
-        with self.app.app_context():
             db.drop_all()
+            db.create_all()
 
      def register_user(self, data):
         return self.client().post('api/v2/auth/register', data=json.dumps(data), content_type='application/json' )
