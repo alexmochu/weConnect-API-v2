@@ -10,7 +10,7 @@ before_script:
   - psql -c 'create database weConnect_test;' -U postgres
 
 script:
-  - nosetests --exe -v --with-coverage
+  - nosetests --with-coverage --cover-package=tests/
 
 after_success:
 - coveralls

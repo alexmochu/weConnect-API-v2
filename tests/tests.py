@@ -1,5 +1,6 @@
 import unittest
-from flask import json
+import os
+import json
 from flask_testing import TestCase
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -12,7 +13,7 @@ class AuthTestCase(unittest.TestCase):
         self.app = create_app(config_name="testing")
         #self.app.config.update(SQLALCHEMY_DATABASE_URI='postgresql://postgres:mypassword@localhost/weConnect_test')
         self.app_context = self.app.app_context()
-        #self.app_context.push()
+        self.app_context.push()
         # initialize the test client
         self.client = self.app.test_client
         # This is the user test json data with a predefined email and password
@@ -42,8 +43,6 @@ class AuthTestCase(unittest.TestCase):
 
         with self.app.app_context():
             # create all tables
-            # db.session.close()
-            db.drop_all()
             db.create_all()
 
      def register_user(self, data):
@@ -60,3 +59,13 @@ class AuthTestCase(unittest.TestCase):
         # assert that the request contains a success message and a 201 status code
         self.assertEqual(result['message'], "Successfully created an account. Login to access account")
         self.assertEqual(res.status_code, 201)
+
+     def tearDown(self):
+        """teardown all initialized variables."""
+        with self.app.app_context():
+            # drop all tables
+            db.session.remove()
+            db.drop_all()
+
+if __name__ == "__main__":
+    unittest.main()
