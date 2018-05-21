@@ -52,3 +52,11 @@ class AuthTestCase(unittest.TestCase):
      def login_user(self, data):
         return self.client().post('/api/v2/auth/login', data=json.dumps(data), content_type='application/json' )
 
+     def test_registration(self):
+        """Test user registration works correcty."""
+        res = self.register_user(self.user_data)
+        # get the results returned in json format
+        result = json.loads(res.data.decode())
+        # assert that the request contains a success message and a 201 status code
+        self.assertEqual(result['message'], "Successfully created an account. Login to access account")
+        self.assertEqual(res.status_code, 201)
