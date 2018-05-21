@@ -29,7 +29,7 @@ class TestingConfig(Config):
     """ Configurations for Testing, with a separate test database."""
     TESTING = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:@localhost/weConnect_test'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:@localhost:5432/weConnect_test'
     PRESERVE_CONTEXT_ON_EXCEPTION = False
     SECRET_KEY = 'ofdhrjrbrneirgeojgoegekgneogre'
 

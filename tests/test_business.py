@@ -27,9 +27,10 @@ class BusinessTestCase(unittest.TestCase):
         # binds the app to the current context
         with self.app.app_context():
             # create all tables
-            db.session.close()
+            # db.session.close()
             db.drop_all()
             db.create_all()
+            session.close()
 
     def register_user(self, data):
         return self.client().post('api/v2/auth/register', data=json.dumps(data), content_type='application/json' )
