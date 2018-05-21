@@ -12,7 +12,7 @@ services:
   - postgresql
 before_script:
   - psql -c 'create database weConnect_test;' -U postgres
-  - flask db upgrade
+  #- flask db upgrade
   #- psql -c "CREATE USER postgres WITH PASSWORD 'mypassword';" -U postgres
   #- psql -c "GRANT ALL PRIVILEGES ON DATABASE weConnect_test to postgres;" -U postgres
 
