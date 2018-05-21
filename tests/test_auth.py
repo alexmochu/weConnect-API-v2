@@ -46,7 +46,7 @@ class AuthTestCase(unittest.TestCase):
             # db.drop_all()
             db.create_all()
 
-    def tearDown(self):
+     def tearDown(self):
         with self.app.app_context():
             db.drop_all()
 
