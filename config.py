@@ -29,9 +29,9 @@ class TestingConfig(Config):
     """ Configurations for Testing, with a separate test database."""
     TESTING = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.getenv('TEST_DB_URL')
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/weConnect_test'
     PRESERVE_CONTEXT_ON_EXCEPTION = False
-    SECRET_KEY = os.getenv('SECRET_KEY')
+    SECRET_KEY = 'ofdhrjrbrneirgeojgoegekgneogre'
 
 app_config = {
     'development': DevelopmentConfig,
