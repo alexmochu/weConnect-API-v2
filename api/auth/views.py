@@ -60,7 +60,8 @@ def signup():
         return 'Username must be more than 5 characters'
     if not re.match(r"(^[a-zA-Z0-9_.]+@[a-zA-Z0-9-]+\.[a-z]+$)", data['email']):
         # Check email validity
-        return 'Provide a valid email!'
+        response = {'message':'Provide a valid email!'}
+        return make_response(jsonify(response)), 302
     if (data['password']!=data['confirm_password']):
         # Verify passwords are matching
         return 'The passwords should match!'
@@ -68,8 +69,7 @@ def signup():
     re.search("[0-9]", data['password']) or not re.search("[A-Z]", data['password']) \
     or not re.search("[$#@*!%^]", data['password']):
         # Check password strength
-        return 'Password length should be more than 5 characters, '\
-            'have one lowercase, uppercase, number and special character'
+        return 'Password length should be more than 5 characters, have one lowercase, uppercase, number and special character'
 
     existing_email = User.query.filter_by(email=data['email']).first()
     if existing_email:
