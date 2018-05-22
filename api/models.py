@@ -74,7 +74,7 @@ class User(db.Model):
         try:
             # try to decode the token using our SECRET variable
             payload = jwt.decode(token, current_app.config.get('SECRET_KEY'))
-            return payload['sub']
+            return payload['username']
         except jwt.ExpiredSignatureError:
             # the token is expired, return an error string
             response = {"Expired token. Please login to get a new token"}
