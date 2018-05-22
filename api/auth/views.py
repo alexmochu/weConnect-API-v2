@@ -105,14 +105,14 @@ def login():
     """Handle POST request for this view. Url ---> /auth/login"""
     try:
         # Get the user object using their email (unique to every user)
-        req = request.authorization
-        user = User.query.filter_by(username=req.username).first()
+        req = request.get_json()
+        user = User.query.filter_by(username=req['username']).first()
         # Try to authenticate the found user using their password
         
-        if user and user.password_is_valid(req.password):
+        if user and user.password_is_valid(req['password']):
             
             # Generate the access token. This will be used as the authorization header
-            header_access_token = user.generate_token(user.public_id)
+            header_access_token = jwt.encode({'username': user.username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, current_app.config.get('SECRET_KEY'))
             print(header_access_token)
             if header_access_token:
                 response = {
