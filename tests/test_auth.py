@@ -47,6 +47,13 @@ class AuthTestCase(unittest.TestCase):
             'confirm_password': 'J@yd33n'
                 }
 
+        self.user_data4 = {
+            'username':'chris#evans',
+            'email': 'test@example.com',
+            'password': 'J@yd33n',
+            'confirm_password': 'J@yd33n'
+                }
+
         with self.app.app_context():
             # create all tables
             db.session.close()
@@ -59,11 +66,125 @@ class AuthTestCase(unittest.TestCase):
      def login_user(self, data):
         return self.client().post('/api/v2/auth/login', data=json.dumps(data), content_type='application/json' )
 
+     def test_valid_email(self):
+        invalid_mail = {
+            'username':'chrisevans',
+            'email': 'test@examplecom',
+            'password': 'J@yd33n',
+            'confirm_password': 'J@yd33n'
+                }
+        res = self.register_user(invalid_mail)
+        print(res)
+        # get the results returned in json format
+        result = res.data
+        # assert that the request contains a success message and a 201 status code
+        self.assertIn("Provide a valid email!", str(result))
+        self.assertEqual(res.status_code, 302)
+
+     def test_username_characters(self):
+        reg_data = {
+            'username':'chris#evans',
+            'email': 'test@example.com',
+            'password': 'J@yd33n',
+            'confirm_password': 'J@yd33n'
+                }
+        res = self.register_user(reg_data)
+        print(res)
+        # get the results returned in json format
+        result = res.data
+        # assert that the request contains a success message and a 201 status code
+        self.assertIn("Username cannot have special characters!", str(result))
+        self.assertEqual(res.status_code, 200)
+
+    
+     def test_password_mismatch(self):
+        """Test if passwords are matching."""
+        reg_data = {
+                    'username':'chrisevans',
+                    'email': 'test@example.com',
+                    'password': 'J@yd33n',
+                    'confirm_password': 'J@yd33na'
+                }
+
+        res = res = self.register_user(reg_data)
+        # get the results returned in json format
+        result = res.data
+        # assert that the request contains an error message and a 403 status code
+        self.assertIn("The passwords should match!", str(result))
+        self.assertEqual(res.status_code, 200)
+
+     def test_username_length(self):
+        """Test username length."""
+        reg_data = {
+                    'username':'csi',
+                    'email': 'test@example.com',
+                    'password': 'J@yd33n',
+                    'cpassword': 'J@yd33n'
+                }
+
+        res = self.register_user(reg_data)
+        # get the results returned in json format
+        result = res.data
+        # assert that the request contains an error message and a 403 status code
+        self.assertIn("Username must be more than 5 characters", str(result))
+        self.assertEqual(res.status_code, 200)
+
+     def test_password_strength(self):
+        """Test if password is strong."""
+        reg_data = {
+                    'username':'chrisevans',
+                    'email': 'test@example.com',
+                    'password': 'bad',
+                    'confirm_password': 'bad'
+                }
+
+        res = self.register_user(reg_data)
+        # get the results returned in json format
+        result = res.data
+        # assert that the request contains an error message and a 403 status code
+        self.assertIn("Password length should be more than 5 characters, have one lowercase, uppercase, number and special character",  str(result))
+        self.assertEqual(res.status_code, 200)
+
+    
+     def test_already_registered_user(self):
+        """Test that a user cannot be registered twice."""
+        reg_data = {
+            'username':'bigdolfr',
+            'email': 'test@example.com',
+            'password': 'J@yd33n',
+            'confirm_password': 'J@yd33n'
+                }
+        self.register_user(self.user_data)
+        res = self.register_user(reg_data)
+        self.assertEqual(res.status_code, 302)
+        # get the results returned in json format
+        result = json.loads(res.data.decode())
+        self.assertEqual(
+        result['message'], "An account with that email already exists!")
+
+     def test_already_existing_username(self):
+        """Test if username already exists."""
+        reg_data = {
+            'username':'bigdolf',
+            'email': 'testr@example.com',
+            'password': 'J@yd33n',
+            'confirm_password': 'J@yd33n'
+                }
+        self.register_user(self.user_data)
+        res = self.register_user(reg_data)
+        self.assertEqual(res.status_code, 302)
+        # get the results returned in json format
+        result = json.loads(res.data.decode())
+        # assert that the request contains the error message
+        self.assertEqual(result['message'], "An account with that username already exists!")
+
      def test_registration(self):
         """Test user registration works correcty."""
         res = self.register_user(self.user_data)
+        print(res)
         # get the results returned in json format
         result = json.loads(res.data.decode())
+
         # assert that the request contains a success message and a 201 status code
         self.assertEqual(result['message'], "Successfully created an account. Login to access account")
         self.assertEqual(res.status_code, 201)
@@ -122,6 +243,32 @@ class AuthTestCase(unittest.TestCase):
         # and a success status code 200(ok)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(result['message'], "Password changed successfully.")
+
+    
+     def test_successful_logout(self):
+        """Test if a user can successfully logout"""
+        # Get token
+        header_access_token = self.get_token()
+        # Logout user
+        res = self.client().post('/api/v2/auth/logout', headers=dict(header_access_token=header_access_token),
+        content_type='application/json')
+        self.assertEqual(res.status_code, 200)
+        result = json.loads(res.data.decode())
+        self.assertIn('Successfully logged out.', result['message'])
+
+    
+     def test_repeat_logout(self):
+        """Test if a user is prevented to logout twice"""
+        # Get token
+        header_access_token = self.get_token()        
+        # Logout user
+        self.client().post('/api/v2/auth/logout', headers=dict(header_access_token=header_access_token),
+        content_type='application/json')
+        res = self.client().post('/api/v2/auth/logout', headers=dict(header_access_token=header_access_token),
+        content_type='application/json')     
+        self.assertEqual(res.status_code, 401)
+        result = json.loads(res.data.decode())
+        self.assertIn('Logged out. Please', result['message'])
 
      def get_token(self):
         """register and login a user to get an access token"""
