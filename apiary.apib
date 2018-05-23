@@ -3,78 +3,306 @@ HOST: http://polls.apiblueprint.org/
 
 # weConnect v2
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+weConnect is an API(platform) for Business owners, that helps them
+create and manage different types of businesses while making them easily 
+accessible to target markets. Business owners need to register for accounts
+, so they can create and manage their businesses. Users need to register to
+review a businesses.
 
-## Questions Collection [/questions]
+## Allowed HTTP Requests
 
-### List All Questions [GET]
+- PUT: To create resource 
+- POST: Update resource
+- GET: Get a resource or list of resources
+- DELETE: To delete resource
 
-+ Response 200 (application/json)
+## Server Responses:
 
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
-            }
-        ]
+- 200 OK - request successful.
+- 201 Created - request successful and resource created.
+- 204 No Content - request successful but response is empty.
+- 400 Bad Request - request cannot be understood or missing required parameters.
+- 401 Unauthorized - authentication failed or no permissions for requested operation.
+- 403 Forbidden - access denied.
+- 404 Not Found - resource was not found.
+- 405 Method Not Allowed - requested method is not supported for resource.
+- 500 Internal Server Error - server encountered an error
 
-### Create a New Question [POST]
+## Core Resources:
+| Resource URL  |  Methods | Description  | 
+|---|---|---|---|---|
+|/api/v2/auth/register   |POST  |User Registration   |  
+|/api/v2/auth/login  |POST   |User Login   | 
+|/api/v2/auth/reset-password |POST   |User can be able to reset password   |  
+|/api/v2/auth/logout   |POST   |Logs out User   |
+|/api/v2/category   |POST |Create a business category   |  
+|/api/v2/category/all   | GET  |Retrieve all created categories   |  
+|/api/v2/category/<category_id>  |PUT   |Updates a business category   |  
+|/api/v2/category/<category_id>    |DELETE  | Deletes a business category  |  
+|/api/v2/<category_id>/business    |POST  |Create a business with unique ID and business name   | 
+|/api/v2/business/all   |GET  |Retrive all business created   | 
+|/api/v2/business/<business_id>   |GET   |Retrive a business by ID   | 
+|/api/v2/business/<business_id>   | DELETE  |Remove a business   | 
+|/api/v2/business/<business_id>/reviews   |POST   |Add a review for a business   | 
+|/api/v2/reviews/all   |GET | Get all reviews  | 
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
+## Register account [/api/v2/auth/register]
 
+### Create new account [POST]
 + Request (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
+          "email":"alex4@gmail.com",
+          "username":"alexdolf",
+          "password":"Yherayab$1",
+          "confirm_password":"Yherayab$1"
+        }
+
+
++ Response 200 (application/json)
+
+        {
+            "message": "Successfully created an account. Login to access account"
+        }
+
+## Login account [/api/v2/auth/login]
+
+### Login to account [POST]
++ Request (application/json)
+
+        The request carries the user data passed in `json` format after validation
+
+            {
+            "username":"alexdolf",
+            "password":"Yherayab$1"
+            }
+
++ Response 201 (application/json)
+
+        Returns a tokenstring upon validating user input
+                
+            {
+            "message": "You logged in successfully.",
+            "header_access_token": "token_string"
+            } 
+
+## Password [/api/v2/auth/reset-password]
+
+### Reset to password [PUT]
++ Request (application/json)
+
+        {
+        "new_password":"Yherayab$2", 
+        "confirm_password":"Yherayab$2"
         }
 
 + Response 201 (application/json)
 
-    + Headers
+        {
+        "message": "Password changed successfully."
+        }
 
-            Location: /questions/2
+## Logout [/api/v2/auth/logout]
 
-    + Body
+### Logout [DELETE]
 
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
-            }
++ Response 200 (application/json)
+        
+        {
+        "message": "Successfully logged out."
+        }
+        
+## Category [/api/v2/category]
+### Create Business Category [POST]
++ Request (application/json)
+
+        {
+        "category_name":"telecomunication"
+        }
+
++ Response 201 (application/json)
+
+        {
+        "message": "Password changed successfully."
+        }
+        
+## Get all categories [/api/v2/category/all]
+### Retrieve all created Categories [GET]
++ Response 201 (application/json)
+
+        {
+            "question": "Favourite programming language?",
+            "published_at": "2014-11-11T08:40:51.620Z",
+            "url": "/questions/1",
+            "choices": [
+                {
+                    "choice": "Swift",
+                    "url": "/questions/1/choices/1",
+                    "votes": 2048
+                }, {
+                    "choice": "Python",
+                    "url": "/questions/1/choices/2",
+                    "votes": 1024
+                }, {
+                    "choice": "Objective-C",
+                    "url": "/questions/1/choices/3",
+                    "votes": 512
+                }, {
+                    "choice": "Ruby",
+                    "url": "/questions/1/choices/4",
+                    "votes": 256
+                }
+            ]
+        }
+        
+## Update/Delete Category [/api/v2/category/<category_id>]
+### Update a Business category [PUT]
++ Request (application/json)
+
+        {
+        "category_name":"agriculture"
+        }
+
++ Response 200 (application/json)
+        
+        {
+        "message": "Successfully updated a business category."
+        }
+
+### Delete a Business category [DELETE]
+
++ Response 200 (application/json)
+        
+        {
+            "message": "Category 1 deleted"
+        }
+        
+## Create Business [/api/v2/<category_id>/business]
+### Create a business [POST]
+
++ Request (application/json)
+
+        {
+        "business":"Maendeleo", 
+        "location":"Nairobi"
+        }
+
++ Response 200 (application/json)
+        
+        {
+        "message": "Successfully created a business."
+        }
+
+## Get all Businesses [/api/v2/business/all]
+### Retrieve all created business categories
+
++ Response 201 (application/json)
+
+        {
+            "question": "Favourite programming language?",
+            "published_at": "2014-11-11T08:40:51.620Z",
+            "url": "/questions/1",
+            "choices": [
+                {
+                    "choice": "Swift",
+                    "url": "/questions/1/choices/1",
+                    "votes": 2048
+                }, {
+                    "choice": "Python",
+                    "url": "/questions/1/choices/2",
+                    "votes": 1024
+                }, {
+                    "choice": "Objective-C",
+                    "url": "/questions/1/choices/3",
+                    "votes": 512
+                }, {
+                    "choice": "Ruby",
+                    "url": "/questions/1/choices/4",
+                    "votes": 256
+                }
+            ]
+        }
+        
+
+## Get/Delete Business [/api/v2/business/<business_id>]
+### Get a business by it's ID [GET]
+
++ Response 201 (application/json)
+
+        {
+            "question": "Favourite programming language?",
+            "published_at": "2014-11-11T08:40:51.620Z",
+            "url": "/questions/1",
+            "choices": [
+                {
+                    "choice": "Swift",
+                    "url": "/questions/1/choices/1",
+                    "votes": 2048
+                }, {
+                    "choice": "Python",
+                    "url": "/questions/1/choices/2",
+                    "votes": 1024
+                }, {
+                    "choice": "Objective-C",
+                    "url": "/questions/1/choices/3",
+                    "votes": 512
+                }, {
+                    "choice": "Ruby",
+                    "url": "/questions/1/choices/4",
+                    "votes": 256
+                }
+            ]
+        }
+        
+### Delete a business by it's ID [DELETE]
+
++ Response 200 (application/json)
+        
+        {
+            "message": "Review 1 deleted"
+        }
+
+## Review Business [/api/v2/business/<business_id>/reviews]
+### Review a business [POST]
+
++ Request (application/json)
+
+        {
+        "review":"This is a very humane thing to do if you think about twice"
+        }
+
++ Response 200 (application/json)
+        
+        {
+        "message": "Successfully reviewed a business"
+        }
+
+
+## Get all Reviews [/api/v2/reviews/all]
+### Retrieve all created reviews
++ Response 201 (application/json)
+
+        {
+            "question": "Favourite programming language?",
+            "published_at": "2014-11-11T08:40:51.620Z",
+            "url": "/questions/1",
+            "choices": [
+                {
+                    "choice": "Swift",
+                    "url": "/questions/1/choices/1",
+                    "votes": 2048
+                }, {
+                    "choice": "Python",
+                    "url": "/questions/1/choices/2",
+                    "votes": 1024
+                }, {
+                    "choice": "Objective-C",
+                    "url": "/questions/1/choices/3",
+                    "votes": 512
+                }, {
+                    "choice": "Ruby",
+                    "url": "/questions/1/choices/4",
+                    "votes": 256
+                }
+            ]
+        }
