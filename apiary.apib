@@ -47,6 +47,7 @@ review a businesses.
 |/api/v2/reviews/all   |GET | Get all reviews  | 
 
 ## Register account [/api/v2/auth/register]
+The user should be able to create a new account using a unique email and username.
 
 ### Create new account [POST]
 + Request (application/json)
@@ -66,7 +67,7 @@ review a businesses.
         }
 
 ## Login account [/api/v2/auth/login]
-
+User should be able to login to an account with his/her login credentials and create a unique Json Web Token.
 ### Login to account [POST]
 + Request (application/json)
 
@@ -87,7 +88,7 @@ review a businesses.
             } 
 
 ## Password [/api/v2/auth/reset-password]
-
+A logged in user should be able to change his/her password.
 ### Reset to password [PUT]
 + Request (application/json)
 
@@ -103,7 +104,7 @@ review a businesses.
         }
 
 ## Logout [/api/v2/auth/logout]
-
+A logged in user should be able to logout successfully by blacklisting the current generated Json Web token.
 ### Logout [DELETE]
 
 + Response 200 (application/json)
