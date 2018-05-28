@@ -44,7 +44,7 @@ The API has been built with:
 | /api/v2/auth/register | POST | User Registration
 | /api/v2/auth/login    | POST | User Login
 | /api/v2/auth/reset-password | PUT | User can be able to reset password
-| /api/v2/auth/logout | POST | Logs out User
+| /api/v2/auth/logout | DELETE | Logs out User
 | /api/v2/category | POST | Create a business category
 | /api/v2/category/all| GET | Retrieve all created categories
 | /api/v2/category/<category_id> | PUT | Updates a business category
@@ -66,10 +66,15 @@ The API has been built with:
 | /api/v2/business/all/page=<int:page> | GET | (Paginantion)Retrive all business created
 | /api/v2/business/all/page=<int:page>&limit=<int:limit> | GET | (Paginantion)Retrive all business created
 
-# Searching and filtering
+# Searching
 | Resource URL | Methods | Description
 |-------------- |------- |---------------
-| /api/v2/search?location=<>| GET | Search Business by Location
+| /api/v2/search?q=<business>| GET | Search Business by q
+ 
+# Searching and Filtering
+| Resource URL | Methods | Description
+|-------------- |------- |---------------
+| /api/v2/search?q=<business>&location=<location>| GET | Filter Business by Location
 
 
 
