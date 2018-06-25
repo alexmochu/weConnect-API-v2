@@ -50,48 +50,54 @@ def token_required(f):
 def signup():
     data = request.get_json()
 
-    if not re.match("^[a-zA-Z0-9_]*$", data['username']):
+    if not re.match("^[a-zA-Z0-9_]*$", data['user']['username']):
         # Check username special characters        
-        return 'Username cannot have special characters!'
-    if len(data['username'].strip())<5:
+        response = {'error':'Username cannot have special characters!'}
+        return make_response(jsonify(response)), 302
+    if len(data['user']['username'].strip())<5:
         # Checkusername length
         # return an error message if requirement not met
         # return a 403 - auth failed
-        return 'Username must be more than 5 characters'
-    if not re.match(r"(^[a-zA-Z0-9_.]+@[a-zA-Z0-9-]+\.[a-z]+$)", data['email']):
+        response = {'error':'Username must be more than 5 characters'}
+        return make_response(jsonify(response)), 302
+    if not re.match(r"(^[a-zA-Z0-9_.]+@[a-zA-Z0-9-]+\.[a-z]+$)", data['user']['email']):
         # Check email validity
-        response = {'message':'Provide a valid email!'}
+        response = {'error':'Provide a valid email!'}
         return make_response(jsonify(response)), 302
-    if (data['password']!=data['confirm_password']):
+    if (data['user']['password']!=data['user']['confirm_password']):
         # Verify passwords are matching
-        return 'The passwords should match!'
-    if len(data['password']) < 5 or not re.search("[a-z]", data['password']) or not\
-    re.search("[0-9]", data['password']) or not re.search("[A-Z]", data['password']) \
-    or not re.search("[$#@*!%^]", data['password']):
+        response = {'error':'The passwords should match!'}
+        return make_response(jsonify(response)), 302
+    if len(data['user']['password']) < 5 or not re.search("[a-z]", data['user']['password']) or not\
+    re.search("[0-9]", data['user']['password']) or not re.search("[A-Z]", data['user']['password']) \
+    or not re.search("[$#@*!%^]", data['user']['password']):
         # Check password strength
-        return 'Password length should be more than 5 characters, have one lowercase, uppercase, number and special character'
+        response = {'error':'Password length should be more than 5 characters, have one lowercase, uppercase, number and special character'}
+        return make_response(jsonify(response)), 302
 
-    existing_email = User.query.filter_by(email=data['email']).first()
+    existing_email = User.query.filter_by(email=data['user']['email']).first()
     if existing_email:
-        response = {"message" : "An account with that email already exists!"}
+        response = {"error" : "An account with that email already exists!"}
         return make_response(jsonify(response)), 302
-    existing_username = User.query.filter_by(username=data['username']).first()
+    existing_username = User.query.filter_by(username=data['user']['username']).first()
     if existing_username:
-        response = {"message" : "An account with that username already exists!"}
+        response = {"error" : "An account with that username already exists!"}
         return make_response(jsonify(response)), 302
 
-    username = data['username']
-    email = data['email']
-    password = data['password']
-    confirm_password = data['confirm_password']
+    username = data['user']['username']
+    email = data['user']['email']
+    password = data['user']['password']
+    confirm_password = data['user']['confirm_password']
 
     try:
         #hashed_password = generate_password_hash(data['password'], method='sha256')
-        new_user = User(public_id=str(uuid.uuid4()), username=data['username'], email=data['email'], password=data['password'])
+        new_user = User(public_id=str(uuid.uuid4()), username=data['user']['username'], email=data['user']['email'], password=data['user']['password'])
         db.session.add(new_user)
         db.session.commit()
 
-        response = {'message': 'Successfully created an account. Login to access account'}
+        response = {
+            "user":{'message': 'Successfully created an account. Login to access account'}
+        }
         # return a response notifying the user that they registered successfully            
     except Exception as e:
         # An error occured, therefore return a string message containing the error
@@ -106,29 +112,30 @@ def login():
     try:
         # Get the user object using their email (unique to every user)
         req = request.get_json()
-        user = User.query.filter_by(username=req['username']).first()
+        user = User.query.filter_by(username=req['credentials']['username']).first()
         # Try to authenticate the found user using their password
         
-        if user and user.password_is_valid(req['password']):
+        if user and user.password_is_valid(req['credentials']['password']):
             
             # Generate the access token. This will be used as the authorization header
             header_access_token = jwt.encode({'username': user.username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, current_app.config.get('SECRET_KEY'))
             print(header_access_token)
             if header_access_token:
                 response = {
+                  "user" :  {
                     'message': 'You logged in successfully.',
                     'header_access_token': header_access_token.decode()
                 }
-                
+                }
                 return make_response(jsonify(response)), 200
         else:
             # User does not exist. Therefore, we return an error message
-            response = {'message': 'Invalid username or password, Please try again'}
+            response = {'error': 'Invalid username or password, Please try again'}
             return make_response(jsonify(response)), 401
 
     except Exception as e:
         # Create a response containing an string error message
-        response = {'message': str(e)}
+        response = {'error': str(e)}
         # Return a server error using the HTTP Error Code 500 (Internal Server Error)
         return make_response(jsonify(response)), 500
        

@@ -95,7 +95,7 @@ def get_business_by_id(current_user, data, business_id):
             'business_owner' : business.owner,
             'business_category_id': business.business_category_id
     }
-    return make_response(jsonify(response)), 200
+    return make_response(jsonify({"business":response})), 200
 
 @business.route('/api/v2/business/<business_id>', methods=['DELETE'])
 @token_required
@@ -114,9 +114,12 @@ def delete_business_by_id(current_user, data, business_id):
 @business.route('/api/v2/business/all', methods=['GET'])
 @business.route('/api/v2/business/all/page=<int:page>', methods=['GET'])
 @business.route('/api/v2/business/all/page=<int:page>&limit=<int:limit>', methods=['GET'])
-def get_all_businesses(limit=4, page=1): 
+#@token_required
+def get_all_businesses(limit=6, page=1): 
 
-    businesses = Business.query.paginate(page, per_page = limit, error_out=True).items
+    # businesses = Business.query.paginate(page, per_page = limit, error_out=True).items
+    businesses = Business.query.paginate(page, limit, False).items
+
 
     results = []
     for business_item in businesses:
@@ -128,7 +131,7 @@ def get_all_businesses(limit=4, page=1):
             'business_location': business_item.business_location
                 }
         results.append(obj)
-    return make_response(jsonify(results)), 200
+    return make_response(jsonify({"businesses":results})), 200
 
 @business.route('/api/v2/search', methods=['GET'])
 def search():
