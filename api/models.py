@@ -157,6 +157,7 @@ class Review(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     review = db.Column(db.String(600))
+    review_test = db.Column(db.String(600))
     reviewer = db.Column(db.String(50), db.ForeignKey('users.username'))
     business_id = db.Column(db.Integer, db.ForeignKey('businesses.id', ondelete='CASCADE', onupdate='CASCADE'))
 
