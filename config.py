@@ -7,7 +7,7 @@ class Config(object):
     """
     # Put any configurations here that are common across all environments
     SQLALCHEMY_DATABASE_URI =  os.getenv('DATABASE_URL')
-    SECRET_KEY = 'ofdhrjrbrneirgeojgoegekgneogre'
+    #SECRET_KEY = 'ofdhrjrbrneirgeojgoegekgneogre'
     DEBUG = True
 
 class DevelopmentConfig(Config):
