@@ -5,6 +5,7 @@ from flask import Flask, jsonify, request, make_response
 from flask_api import FlaskAPI
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_cors import CORS
 
 # local imports
 from config import app_config
@@ -19,7 +20,8 @@ def create_app(config_name):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
     migrate = Migrate(app, db)
-
+    CORS(app)
+    
     # home route
     @app.route('/')
     def hello_world():
