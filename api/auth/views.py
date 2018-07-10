@@ -116,6 +116,7 @@ def login():
         # Try to authenticate the found user using their password
         
         if user and user.password_is_valid(req['credentials']['password']):
+            print(str(user.username))
             
             # Generate the access token. This will be used as the authorization header
             header_access_token = jwt.encode({'username': user.username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, current_app.config.get('SECRET_KEY'))

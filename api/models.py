@@ -125,7 +125,8 @@ class Business(db.Model):
     business = db.Column(db.String(50))
     business_location = db.Column(db.String(50))
     owner = db.Column(db.String, db.ForeignKey('users.username'))
-    business_category_id = db.Column(db.Integer, db.ForeignKey('categories.id', ondelete='CASCADE', onupdate='CASCADE'))
+    category = db.Column(db.String(128))
+    #business_category_id = db.Column(db.Integer, db.ForeignKey('categories.id', ondelete='CASCADE', onupdate='CASCADE'))
 
     def save(self):
         """
