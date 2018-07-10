@@ -74,7 +74,7 @@ The API has been built with:
 # Searching and Filtering
 | Resource URL | Methods | Description
 |-------------- |------- |---------------
-| /api/v2/search?q=<business>&location=<location>| GET | Filter Business by Location
+| /api/v2/search?q=<business>&location=<location>&category=<category>| GET | Filter Business by Location and Category
 
 
 
