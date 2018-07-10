@@ -83,7 +83,6 @@ class User(db.Model):
             # the token is invalid, return an error string
             response = {"Invalid token. Please register or login"}
             return response
-
 class Category(db.Model):
     """
     Create Category table
@@ -126,7 +125,8 @@ class Business(db.Model):
     business = db.Column(db.String(50))
     business_location = db.Column(db.String(50))
     owner = db.Column(db.String, db.ForeignKey('users.username'))
-    business_category_id = db.Column(db.Integer, db.ForeignKey('categories.id', ondelete='CASCADE', onupdate='CASCADE'))
+    category = db.Column(db.String(128))
+    #business_category_id = db.Column(db.Integer, db.ForeignKey('categories.id', ondelete='CASCADE', onupdate='CASCADE'))
 
     def save(self):
         """
@@ -158,6 +158,7 @@ class Review(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     review = db.Column(db.String(600))
+    review_test = db.Column(db.String(600))
     reviewer = db.Column(db.String(50), db.ForeignKey('users.username'))
     business_id = db.Column(db.Integer, db.ForeignKey('businesses.id', ondelete='CASCADE', onupdate='CASCADE'))
 
