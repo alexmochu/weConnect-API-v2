@@ -109,7 +109,7 @@ def delete_business_by_id(current_user, data, business_id):
 @business.route('/api/v2/business/all/page=<int:page>', methods=['GET'])
 @business.route('/api/v2/business/all/page=<int:page>&limit=<int:limit>', methods=['GET'])
 #@token_required
-def get_all_businesses(limit=2, page=1): 
+def get_all_businesses(limit=6, page=1): 
 
     # businesses = Business.query.paginate(page, per_page = limit, error_out=True).items
     businesses = Business.query.order_by(Business.id.desc()).paginate(page, limit, False).items
